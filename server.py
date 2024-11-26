@@ -28,9 +28,9 @@ def make_move():
     if algorithm == 'random':
         ai_move = solver.get_random_move()
     elif algorithm == 'minimax':
-        ai_move = solver.minimax(depth=4, alpha=None, beta=None, maximizing_player=True)
+        ai_move = solver.minimax(depth=4, maximizing_player=True)
     elif algorithm == 'alpha-beta':
-        ai_move = solver.minimax(depth=4, alpha=float('-inf'), beta=float('inf'), maximizing_player=True)
+        ai_move = solver.minimax(depth=4, maximizing_player=True)
     elif algorithm == 'expectiminimax':
         ai_move = solver.expectiminimax(depth=4, maximizing_player=True)
     else:

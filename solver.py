@@ -4,7 +4,7 @@ class Solver:
     def __init__(self, board):
         self.board = board
 
-    def minimax(self, depth, alpha, beta, maximizing_player):
+    def minimax(self, depth, maximizing_player):
         # Implement the minimax algorithm with alpha-beta pruning
         pass
 
@@ -12,8 +12,8 @@ class Solver:
         # Implement the expectiminimax algorithm
         pass
 
-    def get_best_move(self):
-        # Determine the best move using one of the algorithms
+    def minimax_with_alpha_beta(self, depth, maximizing_player):
+        # Implement the minimax algorithm with alpha-beta pruning
         pass
 
     def get_random_move(self):
