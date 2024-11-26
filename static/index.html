@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Connect 4</title>
+        <link rel="stylesheet" href="styles.css">
+    </head>
+    <body>
+        <div class="landing-container">
+            <div class="title-container">
+                <span class="letter">C</span>
+                <span class="letter">o</span>
+                <span class="letter">n</span>
+                <span class="letter">n</span>
+                <span class="letter">e</span>
+                <span class="letter">c</span>
+                <span class="letter">t</span>
+                <span class="letter space">4</span>
+            </div>
+        </div>
+        <div id="setup">
+            <label for="first-player">Choose who starts:</label>
+            <select id="first-player">
+                <option value="X">Player</option>
+                <option value="O">Agent</option>
+            </select>
+            <label for="algorithm">Choose Algorithm:</label>
+            <select id="algorithm">
+                <option value="random">Random</option>
+                <option value="minimax">Minimax (without Alpha-Beta Pruning)</option>
+                <option value="alpha-beta">Minimax (with Alpha-Beta Pruning)</option>
+                <option value="expectiminimax">Expectiminimax</option>
+            </select>
+            <button id="start-button">Start Game</button>
+        </div>
+        <div id="game" style="display: none;">
+            <div id="board"></div>
+            <div id="scores">
+                <p>Player Score: <span id="player-score">0</span></p>
+                <p>Agent Score: <span id="agent-score">0</span></p>
+            </div>
+            <button id="back-button">Back to Start</button>
+        </div>
+        <script src="script.js"></script>
+    </body>
+</html>
