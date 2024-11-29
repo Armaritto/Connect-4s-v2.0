@@ -8,9 +8,17 @@ class Solver:
 
     def minimax(self, depth, maximizing):
         if maximizing:
-            return self.helper.maximize(depth, self.board.board)
+            child,_ = self.helper.maximize(depth, self.board.board)
         else:
-            return self.helper.minimize(depth, self.board.board)
+            child,_ = self.helper.minimize(depth, self.board.board)
+
+        best_move = None
+        for i in range(6):
+            for j in range(7):
+                if self.board.board[i][j] != child[i][j]:
+                    best_move = j
+                    break
+        return best_move
 
     def expectiminimax(self, depth, maximizing):
         # Implement the expectiminimax algorithm

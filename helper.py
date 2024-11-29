@@ -7,7 +7,7 @@ class Helper:
 
     def maximize(self, depth, board_state):
         if self.board.is_full() or depth == 0:
-            return board_state, self.board.check_agent_score()
+            return board_state, self.heuristic(board_state)
 
         max_child, max_utility = None, float('-inf')
 
@@ -21,7 +21,7 @@ class Helper:
 
     def minimize(self, depth, board_state):
         if self.board.is_full() or depth == 0:
-            return board_state, self.board.check_agent_score()
+            return board_state, self.heuristic(board_state)
 
         min_child, min_utility = None, float('inf')
 
@@ -32,3 +32,6 @@ class Helper:
                 min_child, min_utility = child, utility
 
         return min_child, min_utility
+
+    def heuristic(self, board_state):
+        return self.board.check_agent_score() - self.board.check_player_score()
