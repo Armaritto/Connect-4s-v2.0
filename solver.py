@@ -1,5 +1,6 @@
 import random
 from helper import Helper
+from alpha_beta_minimax import AlphaBetaMinimax
 
 class Solver:
     def __init__(self, board):
@@ -25,8 +26,11 @@ class Solver:
         pass
 
     def minimax_with_alpha_beta(self, depth, maximizing):
-        # Implement the minimax algorithm with alpha-beta pruning
-        pass
+        ab_minimax = AlphaBetaMinimax()
+        if maximizing:
+            child, _ = ab_minimax.maximize(depth, self.board.board, float('-inf'), float('inf'))
+        else:
+            child, _ = ab_minimax.minimize(depth, self.board.board, float('-inf'), float('inf'))
 
     def get_random_move(self):
         valid_columns = [col for col in range(7) if self.board.board[0][col] == 'E']
