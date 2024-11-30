@@ -12,6 +12,12 @@ board = Board()
 @app.route('/')
 def index():
     return send_from_directory(app.static_folder, 'index.html')
+@app.route('/script.js')
+def script():
+    return send_from_directory(app.static_folder, 'script.js')
+@app.route('/styles.css')
+def style():
+    return send_from_directory(app.static_folder, 'styles.css')
 
 @app.route('/move', methods=['POST'])
 def make_move():
