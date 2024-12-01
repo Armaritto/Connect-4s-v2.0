@@ -15,11 +15,9 @@ class AlphaBetaMinimax:
         return '\n'.join([''.join(row) for row in board_state])
 
     def add_node(self, node_id, label):
-        print(f"Adding node: {node_id} -> {label}")
         self.dot.node(node_id, label)
 
     def add_edge(self, parent_id, child_id):
-        print(f"Adding edge: {parent_id} -> {child_id}")
         self.dot.edge(parent_id, child_id)
 
     def is_terminal(self, board_state):

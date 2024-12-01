@@ -34,7 +34,7 @@ def make_move():
     elif algorithm == 'minimax':
         ai_move, trace = solver.minimax(depth=6, maximizing=True)
     elif algorithm == 'alpha-beta':
-        ai_move, trace = solver.minimax_with_alpha_beta(depth=2, maximizing=True, current_player='O')
+        ai_move, trace = solver.minimax_with_alpha_beta(depth=2, maximizing=True, current_player='X')
     elif algorithm == 'expectiminimax':
         ai_move, trace = solver.expectiminimax(depth=4, maximizing=True)
     else:
