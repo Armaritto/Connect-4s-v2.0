@@ -26,11 +26,19 @@ class Solver:
         pass
 
     def minimax_with_alpha_beta(self, depth, maximizing):
-        ab_minimax = AlphaBetaMinimax()
+        ab_minimax = AlphaBetaMinimax(self.board)
         if maximizing:
             child, _ = ab_minimax.maximize(depth, self.board.board, float('-inf'), float('inf'))
         else:
             child, _ = ab_minimax.minimize(depth, self.board.board, float('-inf'), float('inf'))
+
+        best_move = None
+        for i in range(6):
+            for j in range(7):
+                if self.board.board[i][j] != child[i][j]:
+                    best_move = j
+                    break
+        return best_move
 
     def get_random_move(self):
         valid_columns = [col for col in range(7) if self.board.board[0][col] == 'E']
