@@ -174,3 +174,22 @@ body {
     }
 }
 
+#trace-container {
+    margin-top: 20px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    background-color: #f9f9f9;
+    max-height: 400px;
+    overflow-y: auto;
+    white-space: pre-wrap;
+    font-family: monospace;
+}
+
+#trace-container h3 {
+    margin-top: 0;
+}
+
+#trace {
+    margin: 0;
+    padding: 0;
+}

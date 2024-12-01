@@ -25,12 +25,13 @@ class Solver:
         # Implement the expectiminimax algorithm
         pass
 
-    def minimax_with_alpha_beta(self, depth, maximizing):
+    def minimax_with_alpha_beta(self, depth, maximizing, current_player):
         ab_minimax = AlphaBetaMinimax(self.board)
+
         if maximizing:
-            child, _ = ab_minimax.maximize(depth, self.board.board, float('-inf'), float('inf'))
+            child, _, root_id = ab_minimax.maximize(depth, self.board.board, float('-inf'), float('inf'), current_player)
         else:
-            child, _ = ab_minimax.minimize(depth, self.board.board, float('-inf'), float('inf'))
+            child, _, root_id = ab_minimax.minimize(depth, self.board.board, float('-inf'), float('inf'), current_player)
 
         best_move = None
         for i in range(6):
@@ -38,7 +39,11 @@ class Solver:
                 if self.board.board[i][j] != child[i][j]:
                     best_move = j
                     break
-        return best_move
+            if best_move is not None:
+                break
+
+        ab_minimax.dot.render('tree_trace', format='png', cleanup=True)
+        return best_move, root_id
 
     def get_random_move(self):
         valid_columns = [col for col in range(7) if self.board.board[0][col] == 'E']

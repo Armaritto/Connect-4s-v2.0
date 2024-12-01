@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const boardElement = document.getElementById('board');
     const playerScoreElement = document.getElementById('player-score');
     const agentScoreElement = document.getElementById('agent-score');
+    const traceElement = document.getElementById('trace');
     let board = Array(6).fill().map(() => Array(7).fill('E'));
     let currentPlayer = 'X';
     let selectedAlgorithm = 'random';
@@ -31,6 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
         renderBoard(board);
         playerScoreElement.textContent = '0';
         agentScoreElement.textContent = '0';
+        traceElement.textContent = '';
     });
 
     function renderBoard(board) {
@@ -67,6 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
             renderBoard(board);
             playerScoreElement.textContent = data.player_score;
             agentScoreElement.textContent = data.agent_score;
+            traceElement.textContent = data.trace;
         } catch (error) {
             alert('Failed to connect to the server. Please try again later.');
         }
@@ -87,6 +90,7 @@ document.addEventListener('DOMContentLoaded', () => {
             renderBoard(board);
             playerScoreElement.textContent = data.player_score;
             agentScoreElement.textContent = data.agent_score;
+            traceElement.textContent = data.trace;
         } catch (error) {
             alert('Failed to connect to the server. Please try again later.');
         }

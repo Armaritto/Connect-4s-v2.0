@@ -25,21 +25,28 @@ def make_move():
     if column != -1:
         board.make_move(column)
 
+    ai_move = None
+    trace = ""
+
     if algorithm == 'random':
         ai_move = solver.get_random_move()
+        trace = "Random move selected."
     elif algorithm == 'minimax':
-        ai_move = solver.minimax(depth=6, maximizing=True)  # maximize ai score
+        ai_move, trace = solver.minimax(depth=6, maximizing=True)
     elif algorithm == 'alpha-beta':
-        ai_move  = solver.minimax_with_alpha_beta(depth=6, maximizing=True)
+        ai_move, trace = solver.minimax_with_alpha_beta(depth=2, maximizing=True, current_player='O')
     elif algorithm == 'expectiminimax':
-        ai_move = solver.expectiminimax(depth=4, maximizing=True)
+        ai_move, trace = solver.expectiminimax(depth=4, maximizing=True)
     else:
         ai_move = solver.get_random_move()
+        trace = "Random move selected."
 
-    board.make_move(ai_move)
+    if ai_move is not None:
+        board.make_move(ai_move)
+
     player_score = board.check_player_score()
     agent_score = board.check_agent_score()
-    return jsonify({'board': str(board), 'ai_move': ai_move, 'player_score': player_score, 'agent_score': agent_score})
+    return jsonify({'board': str(board), 'ai_move': ai_move, 'player_score': player_score, 'agent_score': agent_score, 'trace': trace})
 
 if __name__ == '__main__':
     app.run(debug=True)

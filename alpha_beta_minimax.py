@@ -1,97 +1,101 @@
 from board import Board
+from helper import Helper
+from graphviz import Digraph
 
 class AlphaBetaMinimax:
     def __init__(self, board):
         self.board = board
-        pass
+        self.helper = Helper()
+        self.node_counter = 0
+        self.dot = Digraph()
 
-    def maximize(self, depth, board_state, alpha, beta, indent=0):
-        if self.board.is_full() or depth == 0:
-            utility = self.heuristic(board_state)
-            print(f"{' ' * indent}Maximize: Depth {depth}, Utility {utility}, State:\n{board_state}")
-            return board_state, utility
+    def board_to_string(self, board_state):
+        if board_state is None:
+            return "No valid moves"
+        return '\n'.join([''.join(row) for row in board_state])
 
-        max_child, max_utility = None, float('-inf')
+    def add_node(self, node_id, label):
+        print(f"Adding node: {node_id} -> {label}")
+        self.dot.node(node_id, label)
 
-        for child in self.board.get_children(board_state):
-            _, utility = self.minimize(depth - 1, child, alpha, beta, indent + 2)
+    def add_edge(self, parent_id, child_id):
+        print(f"Adding edge: {parent_id} -> {child_id}")
+        self.dot.edge(parent_id, child_id)
+
+    def is_terminal(self, board_state):
+        return self.board.is_full() or self.helper.heuristic(board_state) in [float('inf'), float('-inf')]
+
+    def evaluate_board(self, board_state, current_player):
+        return self.helper.heuristic(board_state)
+
+    def maximize(self, depth, board_state, alpha, beta, current_player, parent_id=None, indent=0):
+        if depth == 0 or self.is_terminal(board_state):
+            utility = self.evaluate_board(board_state, current_player)
+            node_id = str(self.node_counter)
+            self.node_counter += 1
+            label = f'Maximize: Depth {depth}, Utility {utility}\n{self.board_to_string(board_state)}'
+            self.add_node(node_id, label)
+            if parent_id is not None:
+                self.add_edge(parent_id, node_id)
+            return board_state, utility, node_id
+
+        max_utility = float('-inf')
+        max_child = board_state
+        node_id = str(self.node_counter)
+        self.node_counter += 1
+        label = f'Maximize: Depth {depth}, Utility {max_utility}\n{self.board_to_string(board_state)}'
+        self.add_node(node_id, label)
+        if parent_id is not None:
+            self.add_edge(parent_id, node_id)
+
+        for child in self.board.get_children(board_state, current_player):
+            _, utility, child_id = self.minimize(depth - 1, child, alpha, beta, 'O', node_id, indent + 2)
 
             if utility > max_utility:
-                max_child, max_utility = child, utility
+                max_utility = utility
+                max_child = child
 
-            if max_utility >= beta:
+            alpha = max(alpha, utility)
+            if beta <= alpha:
                 break
 
-            if max_utility > alpha:
-                alpha = max_utility
+        label = f'Maximize: Depth {depth}, Utility {max_utility}\n{self.board_to_string(max_child)}'
+        self.dot.node(node_id, label)
 
-        print(f"{' ' * indent}Maximize: Depth {depth}, Utility {max_utility}, State:\n{board_state}")
-        return max_child, max_utility
+        return max_child, max_utility, node_id
 
-    def minimize(self, depth, board_state, alpha, beta, indent=0):
-        if self.board.is_full() or depth == 0:
-            utility = self.heuristic(board_state)
-            print(f"{' ' * indent}Minimize: Depth {depth}, Utility {utility}, State:\n{board_state}")
-            return board_state, utility
+    def minimize(self, depth, board_state, alpha, beta, current_player, parent_id=None, indent=0):
+        if depth == 0 or self.is_terminal(board_state):
+            utility = self.evaluate_board(board_state, current_player)
+            node_id = str(self.node_counter)
+            self.node_counter += 1
+            label = f'Minimize: Depth {depth}, Utility {utility}\n{self.board_to_string(board_state)}'
+            self.add_node(node_id, label)
+            if parent_id is not None:
+                self.add_edge(parent_id, node_id)
+            return board_state, utility, node_id
 
-        min_child, min_utility = None, float('inf')
+        min_utility = float('inf')
+        min_child = board_state
+        node_id = str(self.node_counter)
+        self.node_counter += 1
+        label = f'Minimize: Depth {depth}, Utility {min_utility}\n{self.board_to_string(board_state)}'
+        self.add_node(node_id, label)
+        if parent_id is not None:
+            self.add_edge(parent_id, node_id)
 
-        for child in self.board.get_children(board_state):
-            _, utility = self.maximize(depth - 1, child, alpha, beta, indent + 2)
+        for child in self.board.get_children(board_state, current_player):
+            _, utility, child_id = self.maximize(depth - 1, child, alpha, beta, 'X', node_id, indent + 2)
 
             if utility < min_utility:
-                min_child, min_utility = child, utility
+                min_utility = utility
+                min_child = child
 
-            if min_utility <= alpha:
+            beta = min(beta, utility)
+            if beta <= alpha:
                 break
 
-            if min_utility < beta:
-                beta = min_utility
+        label = f'Minimize: Depth {depth}, Utility {min_utility}\n{self.board_to_string(min_child)}'
+        self.dot.node(node_id, label)
 
-        print(f"{' ' * indent}Minimize: Depth {depth}, Utility {min_utility}, State:\n{board_state}")
-        return min_child, min_utility
-
-    def heuristic_helper(self, player, board_state):
-        pot_horizontal = 0
-        pot_vertical = 0
-        pot_diagonal = 0
-        # move a window of 4 over the row, column, or diagonal if the window contains a token that is not the player or an empty space, don't increment the potential score, otherwise increment
-        #Horizontal
-        for row in board_state:
-           for i in range(len(row) - 3):
-                window = row[i:i + 4]
-                if all(cell == player or cell == 'E' for cell in window):
-                    pot_horizontal += 1
-
-        #Vertical
-        for col in range(7):
-            for i in range(3):
-                window = [board_state[i + j][col] for j in range(4)]
-                if all(cell == player or cell == 'E' for cell in window):
-                    pot_vertical += 1
-
-        #Diagonal
-        for i in range(3):
-            for j in range(4):
-                #positive slope
-                window = [board_state[i + k][j + k] for k in range(4)]
-                if all(cell == player or cell == 'E' for cell in window):
-                    pot_diagonal += 1
-                #negative slope
-                window = [board_state[i + k][j + 3 - k] for k in range(4)]
-                if all(cell == player or cell == 'E' for cell in window):
-                    pot_diagonal += 1
-
-        return pot_horizontal + pot_vertical + pot_diagonal
-
-    def heuristic(self, board_state):
-
-        #calculate the difference between the agent's and the player's actual scores
-        h_current = self.board.check_agent_score() - self.board.check_player_score()
-
-        #calculate the difference between the agent's and the player's potential scores
-        h_potential = self.heuristic_helper('O', board_state) - self.heuristic_helper('X', board_state)
-
-        return h_current + h_potential
-
-
+        return min_child, min_utility, node_id
