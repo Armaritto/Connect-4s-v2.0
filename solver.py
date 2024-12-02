@@ -4,10 +4,10 @@ from expectiminimax_solver import Expectiminimax_solver
 from alpha_beta_minimax import AlphaBetaMinimax
 
 class Solver:
-    def __init__(self, board):
+    def __init__(self, board, k):
         self.board = board
         self.helper = Helper()
-        self.expectiminimax_solver = Expectiminimax_solver()
+        self.expectiminimax_solver = Expectiminimax_solver(k)
 
     def minimax(self, depth, maximizing):
         if maximizing:
@@ -47,7 +47,7 @@ class Solver:
                 samples.append(move)
             weight = 1
         random_move = random.choice(samples)
-        
+        print("samples ai:     " + str(samples))
         return random_move
 
     def minimax_with_alpha_beta(self, depth, maximizing):

@@ -1,11 +1,12 @@
 from board import Board
-from graphviz import Digraph
+from digraph_factory import Digraph_factory
 from helper import Helper
 
 class Expectiminimax_solver:
-    def __init__(self):
+    def __init__(self, k):
         self.board = Board()
-        self.dot = Digraph()
+        self.factory = Digraph_factory()
+        self.dot = self.factory.create_digraph("expectiminimax", k)
         self.helper = Helper()
         self.node_counter = 0
         pass
@@ -68,7 +69,7 @@ class Expectiminimax_solver:
             if utility > max_utility:
                 max_child, max_utility = child, utility
 
-        label = f'Maximize: Depth {depth}, Utility: {max_utility} \n{self.board_to_string(board_state)}'
+        label = f'Maximize: Depth {depth}, Utility: {max_utility:.4f} \n{self.board_to_string(board_state)}'
         self.add_node(node_id, label)
 
         return max_child, max_utility
@@ -99,7 +100,7 @@ class Expectiminimax_solver:
             if utility < min_utility:
                 min_child, min_utility = child, utility
 
-        label = f'Minimize: Depth {depth}, Utility:{min_utility} \n{self.board_to_string(board_state)}'
+        label = f'Minimize: Depth {depth}, Utility:{min_utility:.4f} \n{self.board_to_string(board_state)}'
         self.add_node(node_id, label)
 
         return min_child, min_utility
@@ -131,7 +132,7 @@ class Expectiminimax_solver:
             
         expected_utility = expected_utility/weigth_sum
 
-        label = f'Chance: Depth {depth}, Utility:{expected_utility}'
+        label = f'Chance: Depth {depth}, Utility:{expected_utility:.4f}'
         self.add_node(node_id, label)
         return expected_utility
 
