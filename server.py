@@ -29,7 +29,10 @@ def make_move():
     solver = Solver(board)
 
     if column != -1:
-        board.make_move(column)
+        if algorithm == 'expectiminimax':
+            board.make_move_with_chance(column)
+        else:
+            board.make_move(column)
 
     if algorithm == 'random':
         ai_move = solver.get_random_move()

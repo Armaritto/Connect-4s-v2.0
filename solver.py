@@ -46,7 +46,7 @@ class Solver:
                 samples.append(move)
             weight = 1
         random_move = random.choice(samples)
-        
+        print("samples ai:     " + str(samples))
         return random_move
 
     def minimax_with_alpha_beta(self, depth, maximizing):
