@@ -4,11 +4,13 @@ from expectiminimax_solver import Expectiminimax_solver
 from alpha_beta_minimax import AlphaBetaMinimax
 
 class Solver:
+
     def __init__(self, board, k):
         self.board = board
         self.k = k
         self.helper = Helper(k)
         self.expectiminimax_solver = Expectiminimax_solver(k)
+        self.ab_minimax_solver = AlphaBetaMinimax(k)
 
     def minimax(self,  maximizing):
         if maximizing:
@@ -16,8 +18,10 @@ class Solver:
         else:
             child,_ = self.helper.minimize(self.k, self.board.board, None)
 
+        # render the tree trace
         self.helper.dot.render('tree_trace', format='svg', cleanup=True)
 
+        # find the best move
         best_move = None
         for i in range(6):
             for j in range(7):
@@ -26,14 +30,18 @@ class Solver:
                     break
         return best_move
 
+
     def expectiminimax(self, maximizing):
         if maximizing:
             chosen_move,_ = self.expectiminimax_solver.maximize(self.k, self.board.board, None)
         else:
             chosen_move,_ = self.expectiminimax_solver.minimize(self.k, self.board.board, None)
 
+
+        # render the tree trace
         self.expectiminimax_solver.dot.render('tree_trace', format='svg', cleanup=True)
 
+        # find the best move
         moves = []
         for col in [chosen_move, chosen_move-1, chosen_move+1]:
             if 0 <= col <= 6:
@@ -51,6 +59,7 @@ class Solver:
         print("samples ai:     " + str(samples))
         return random_move
 
+
     def minimax_with_alpha_beta(self, maximizing):
         ab_minimax = AlphaBetaMinimax(self.board)
         if maximizing:
@@ -58,6 +67,11 @@ class Solver:
         else:
             child, _ = ab_minimax.minimize(self.k, self.board.board, float('-inf'), float('inf'))
 
+
+        # render the tree trace
+        self.ab_minimax_solver.helper.dot.render('tree_trace', format='svg', cleanup=True)
+
+        # find the best move
         best_move = None
         for i in range(6):
             for j in range(7):
@@ -66,6 +80,6 @@ class Solver:
                     break
         return best_move
 
-    def get_random_move(self):
+    def get_random_move(self):      # if the AI player cannot find a winning move, it will choose a random move
         valid_columns = [col for col in range(7) if self.board.board[0][col] == 'E']
         return random.choice(valid_columns)
