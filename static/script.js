@@ -65,7 +65,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const response = await fetch('http://127.0.0.1:5000/move', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ column: parseInt(column), board: board.map(row => row.join('')).join('\n'), algorithm: selectedAlgorithm, k: kValue })
+                body: JSON.stringify({ column: parseInt(column), board: board.map(row => row.join('')).join('\n'), algorithm: selectedAlgorithm, k: kValue, ai_first: false })
             });
             if (!response.ok) {
                 throw new Error('Network response was not ok');
@@ -85,7 +85,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const response = await fetch('http://127.0.0.1:5000/move', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ column: -1, board: board.map(row => row.join('')).join('\n'), algorithm: selectedAlgorithm, k: kValue })
+                body: JSON.stringify({ column: -1, board: board.map(row => row.join('')).join('\n'), algorithm: selectedAlgorithm, k: kValue, ai_first: true })
             });
             if (!response.ok) {
                 throw new Error('Network response was not ok');
