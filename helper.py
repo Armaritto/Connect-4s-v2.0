@@ -1,35 +1,86 @@
 from board import Board
+from graphviz import Digraph
 
 class Helper:
     def __init__(self):
         self.board = Board()
+        self.dot = Digraph()
+        self.node_counter = 0
         pass
 
-    def maximize(self, depth, board_state):
+    def board_to_string(self, board_state):
+        if board_state is None:
+            return "No valid moves"
+        return '\n'.join([''.join(row) for row in board_state])
+    
+    def add_node(self, node_id, label):
+        self.dot.node(node_id, label)
+
+    def add_edge(self, parent_id, child_id):
+        self.dot.edge(parent_id, child_id)
+    
+    def maximize(self, depth, board_state, parent_id):
+        self.board.current_player = 'O'
         if self.board.is_full() or depth == 0:
-            return board_state, self.heuristic(board_state)
+            node_id = str(self.node_counter)
+            self.node_counter += 1
+            utility = self.heuristic(board_state)
+            label = f'Leaf: Depth {depth}, Utility: {utility} \n{self.board_to_string(board_state)}'
+            self.add_node(node_id, label)
+            self.add_edge(parent_id, node_id)
+
+            return board_state, utility
+        
+        
+        node_id = str(self.node_counter)
+        self.node_counter += 1
+        label = " "
+        
+        self.add_node(node_id, label)
+        if parent_id is not None:
+            self.add_edge(parent_id, node_id)
 
         max_child, max_utility = None, float('-inf')
 
         for child in self.board.get_children(board_state):
-            _, utility = self.minimize(depth - 1, child)
+            _, utility = self.minimize(depth - 1, child, node_id)
 
             if utility > max_utility:
                 max_child, max_utility = child, utility
+        
+        label = f'Maximize: Depth {depth}, Utility: {max_utility} \n{self.board_to_string(board_state)}'
+        self.add_node(node_id, label)
 
         return max_child, max_utility
 
-    def minimize(self, depth, board_state):
+    def minimize(self, depth, board_state, parent_id):
+        self.board.current_player = 'X'
         if self.board.is_full() or depth == 0:
+            node_id = str(self.node_counter)
+            self.node_counter += 1
+            utility = self.heuristic(board_state)
+            label = f'Leaf: Depth {depth}, Utility: {utility} \n{self.board_to_string(board_state)}'
+            self.add_node(node_id, label)
+            self.add_edge(parent_id, node_id)
             return board_state, self.heuristic(board_state)
+        
+        node_id = str(self.node_counter)
+        self.node_counter += 1
+        label = " "
+        self.add_node(node_id, label)
+        if parent_id is not None:
+            self.add_edge(parent_id, node_id)
 
         min_child, min_utility = None, float('inf')
 
         for child in self.board.get_children(board_state):
-            _, utility = self.maximize(depth - 1, child)
+            _, utility = self.maximize(depth - 1, child, node_id)
 
             if utility < min_utility:
                 min_child, min_utility = child, utility
+        
+        label = f'Minimize: Depth {depth}, Utility:{min_utility} \n{self.board_to_string(board_state)}'
+        self.add_node(node_id, label)
 
         return min_child, min_utility
 

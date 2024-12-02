@@ -12,6 +12,12 @@ board = Board()
 @app.route('/')
 def index():
     return send_from_directory(app.static_folder, 'index.html')
+@app.route('/script.js')
+def script():
+    return send_from_directory(app.static_folder, 'script.js')
+@app.route('/styles.css')
+def style():
+    return send_from_directory(app.static_folder, 'styles.css')
 
 @app.route('/move', methods=['POST'])
 def make_move():
@@ -32,7 +38,7 @@ def make_move():
         ai_move = solver.get_random_move()
         trace = "Random move selected."
     elif algorithm == 'minimax':
-        ai_move, trace = solver.minimax(depth=6, maximizing=True)
+        ai_move = solver.minimax(depth=3, maximizing=True)  # maximize ai score
     elif algorithm == 'alpha-beta':
         ai_move, trace = solver.minimax_with_alpha_beta(depth=2, maximizing=True, current_player='X')
     elif algorithm == 'expectiminimax':

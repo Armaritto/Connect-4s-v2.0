@@ -3,6 +3,12 @@ class Board:
         self.board = [['E'] * 7 for _ in range(6)]
         self.current_player = 'X'
 
+    def toggle_player(self):
+        if self.current_player == 'X':
+            self.current_player = 'O'
+        else:
+            self.current_player = 'X'
+            
     def make_move(self, column):
         for row in reversed(self.board):
             if row[column] == 'E':
@@ -14,12 +20,13 @@ class Board:
     def get_children(self, board_state, current_player):
         children = []
         for col in range(7):
-            for row in reversed(range(6)):
-                if board_state[row][col] == 'E':
-                    child = [list(r) for r in board_state]
-                    child[row][col] = current_player
-                    children.append(child)
-                    break
+            if board_state[0][col] == 'E':
+                child = [list(row) for row in board_state]
+                for row in reversed(child):
+                    if row[col] == 'E':  
+                        row[col] = self.current_player
+                        children.append(child)
+                        break
         return children
 
     def is_full(self):
