@@ -3,10 +3,10 @@ from helper import Helper
 from expectiminimax_solver import Expectiminimax_solver
 
 class Solver:
-    def __init__(self, board):
+    def __init__(self, board, k):
         self.board = board
         self.helper = Helper()
-        self.expectiminimax_solver = Expectiminimax_solver()
+        self.expectiminimax_solver = Expectiminimax_solver(k)
 
     def minimax(self, depth, maximizing):
         if maximizing:
