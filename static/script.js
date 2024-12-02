@@ -52,8 +52,14 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+
+
     async function handleCellClick(event) {
         const column = event.target.dataset.column;
+        if(board[0][column] !== 'E') {
+            alert('Invalid move');
+            return;
+        }
         const kValue = document.getElementById('k-value').value;
         try {
             const response = await fetch('http://127.0.0.1:5000/move', {
