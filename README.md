@@ -6,6 +6,14 @@
 - [Pierre Jack: 21010394](https://github.com/Pierre-Jack)
 
 # Introduction 🌟
+
+Connect 4 is a two-player game in which the players first choose a color and then take turns
+dropping their colored discs from the top into a grid. The pieces fall straight down, occupying
+the next available space within the column. The objective of the game is to connect-four of
+one’s own discs of the same color next to each other vertically, horizontally, or diagonally. The
+two players keep playing until the board is full. The winner is the player having greater
+number of connected-fours.
+
 ## Problem Statement ❓
 
 # Implementation
@@ -678,8 +686,38 @@ function heuristic(board_state):
 ![Test Run 12](test_runs/4.1.png)
 ![Test Run 13](test_runs/4.2.png)
 ![Test Run 14](test_runs/4.3.png)
-        
 
-#### Screenshots
 
 # Comparaisons Between Algorithms
+
+## Nodes Expanded
+
+| K | MiniMax Without α β pruning | MiniMax with α β pruning | ExpectiMiniMax |
+|:-:|:---------------------------:|:------------------------:|:--------------:|
+| 1 |              8              |            8             |       27       |
+| 2 |             57              |            47            |       27       |
+| 3 |             400             |           224            |      521       |
+| 4 |            2801             |           747            |      521       |
+| 5 |            19608            |           3456           |      9907      |
+| 6 |           137256            |          11453           |      9907      |
+| 7 |           960750            |          44896           |     188241     |
+| 8 |           6724200           |          161528          |     188241     |
+
+
+## Time Taken
+
+| K | MiniMax Without α 	β pruning | MiniMax with α 	β pruning | ExpectiMiniMax |
+|:-:|:----------------------------:|:-------------------------:|:--------------:|
+| 1 |          407.73 ms           |         623.78 ms         |    68.47 ms    |
+| 2 |           80.94 ms           |         71.05 ms          |    61.83 ms    |
+| 3 |          315.26 ms           |         152.77 ms         |   240.91 ms    |
+| 4 |            3.42 s            |         525.92 µs         |   318.62 µs    |
+| 5 |            8.25 s            |          1.63 s           |     1.78 s     |
+| 6 |           38.84 s            |          2.77 s           |     2.20 s     |
+| 7 |           384.95 s           |           8.2 s           |    31.75 s     |
+| 8 |           29.8 min           |          36.99 s          |    40.67 s     |
+
+
+
+
+

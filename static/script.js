@@ -53,15 +53,15 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    function formatTime(ms) {
-        if (ms < 1) {
-            return `${(ms * 1000).toFixed(2)} µs`;
-        } else if (ms < 1000) {
-            return `${ms.toFixed(2)} ms`;
-        } else if (ms < 60000) {
-            return `${(ms / 1000).toFixed(2)} s`;
+    function formatTime(seconds) {
+        if (seconds < 0.001) {
+            return `${(seconds * 1000000).toFixed(2)} µs`;
+        } else if (seconds < 1) {
+            return `${(seconds * 1000).toFixed(2)} ms`;
+        } else if (seconds < 60) {
+            return `${seconds.toFixed(2)} s`;
         } else {
-            return `${(ms / 60000).toFixed(2)} min`;
+            return `${(seconds / 60).toFixed(2)} min`;
         }
     }
 
