@@ -1,11 +1,13 @@
 from board import Board
-from graphviz import Digraph
+from digraph_factory import Digraph_factory
 
 class Helper:
-    def __init__(self):
-        self.board = Board()        # create an instance of the Board class
-        self.dot = Digraph()        # create an instance of the Digraph class
-        self.node_counter = 0       # initialize the node counter to 0
+
+    def __init__(self, k):
+        self.board = Board()
+        self.factory = Digraph_factory()
+        self.dot = self.factory.create_digraph("minimax", k)
+        self.node_counter = 0
         pass
 
     def board_to_string(self, board_state):

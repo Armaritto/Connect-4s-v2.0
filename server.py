@@ -26,19 +26,22 @@ def make_move():
     algorithm = data.get('algorithm', 'random')
     board_state = data['board'].split('\n')
     board.board = [list(row) for row in board_state]
-    solver = Solver(board)
+    solver = Solver(board, 5)
 
     if column != -1:
-        board.make_move(column)
+        if algorithm == 'expectiminimax':
+            board.make_move_with_chance(column)
+        else:
+            board.make_move(column)
 
     if algorithm == 'random':
         ai_move = solver.get_random_move()
     elif algorithm == 'minimax':
-        ai_move = solver.minimax(depth=3, maximizing=True)  # maximize ai score
+        ai_move = solver.minimax(maximizing=True)  # maximize ai score
     elif algorithm == 'alpha-beta':
-        ai_move  = solver.minimax_with_alpha_beta(depth=3, maximizing=True)
+        ai_move  = solver.minimax_with_alpha_beta(maximizing=True)
     elif algorithm == 'expectiminimax':
-        ai_move = solver.expectiminimax(depth=4, maximizing=True)
+        ai_move = solver.expectiminimax(maximizing=True)
     else:
         ai_move = solver.get_random_move()
 

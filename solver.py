@@ -4,18 +4,19 @@ from expectiminimax_solver import Expectiminimax_solver
 from alpha_beta_minimax import AlphaBetaMinimax
 
 class Solver:
-    # The Solver class is responsible for choosing the best move for the AI player
-    def __init__(self, board):
-        self.board = board
-        self.helper = Helper()
-        self.expectiminimax_solver = Expectiminimax_solver()
-        self.ab_minimax_solver = AlphaBetaMinimax()
 
-    def minimax(self, depth, maximizing):   #
-        if maximizing:  # if maximizing, the AI player is the maximizing player
-            child,_ = self.helper.maximize(depth, self.board.board, None)
-        else:   # if minimizing, the human player is the minimizing player
-            child,_ = self.helper.minimize(depth, self.board.board, None)
+    def __init__(self, board, k):
+        self.board = board
+        self.k = k
+        self.helper = Helper(k)
+        self.expectiminimax_solver = Expectiminimax_solver(k)
+        self.ab_minimax_solver = AlphaBetaMinimax(k)
+
+    def minimax(self,  maximizing):
+        if maximizing:
+            child,_ = self.helper.maximize(self.k, self.board.board, None)
+        else:
+            child,_ = self.helper.minimize(self.k, self.board.board, None)
 
         # render the tree trace
         self.helper.dot.render('tree_trace', format='svg', cleanup=True)
@@ -29,11 +30,13 @@ class Solver:
                     break
         return best_move
 
-    def expectiminimax(self, depth, maximizing):
-        if maximizing:  # if maximizing, the AI player is the maximizing player
-            chosen_move,_ = self.expectiminimax_solver.maximize(depth, self.board.board, None)
-        else:   # if minimizing, the human player is the minimizing player
-            chosen_move,_ = self.expectiminimax_solver.minimize(depth, self.board.board, None)
+
+    def expectiminimax(self, maximizing):
+        if maximizing:
+            chosen_move,_ = self.expectiminimax_solver.maximize(self.k, self.board.board, None)
+        else:
+            chosen_move,_ = self.expectiminimax_solver.minimize(self.k, self.board.board, None)
+
 
         # render the tree trace
         self.expectiminimax_solver.dot.render('tree_trace', format='svg', cleanup=True)
@@ -53,14 +56,17 @@ class Solver:
                 samples.append(move)
             weight = 1
         random_move = random.choice(samples)
-        
+        print("samples ai:     " + str(samples))
         return random_move
 
-    def minimax_with_alpha_beta(self, depth, maximizing):
-        if maximizing:  # if maximizing, the AI player is the maximizing player
-            child, _ = self.ab_minimax_solver.maximize(depth, self.board.board, float('-inf'), float('inf'), None)
-        else:       # if minimizing, the human player is the minimizing player
-            child, _ = self.ab_minimax_solver.minimize(depth, self.board.board, float('-inf'), float('inf'), None)
+
+    def minimax_with_alpha_beta(self, maximizing):
+        ab_minimax = AlphaBetaMinimax(self.board)
+        if maximizing:
+            child, _ = ab_minimax.maximize(self.k, self.board.board, float('-inf'), float('inf'))
+        else:
+            child, _ = ab_minimax.minimize(self.k, self.board.board, float('-inf'), float('inf'))
+
 
         # render the tree trace
         self.ab_minimax_solver.helper.dot.render('tree_trace', format='svg', cleanup=True)

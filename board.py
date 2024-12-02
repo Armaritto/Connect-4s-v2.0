@@ -1,3 +1,4 @@
+import random
 class Board:
     def __init__(self):
         self.board = ['E' * 7 for _ in range(6)]
@@ -19,6 +20,24 @@ class Board:
                     self.current_player = 'X'
                 return True
         return False
+    
+    def make_move_with_chance(self, column):
+        chosen_move = column
+        moves = []
+        for col in [chosen_move, chosen_move-1, chosen_move+1]:
+            if 0 <= col <= 6:
+                if self.board[0][col] == 'E':
+                    moves.append(col)
+        
+        weight = 3
+        samples = []
+        for move in moves:
+            for i in range(weight):
+                samples.append(move)
+            weight = 1
+        random_move = random.choice(samples)
+        print("samples player :     " + str(samples))
+        self.make_move(random_move)
 
     def get_children(self, board_state):
         children = []

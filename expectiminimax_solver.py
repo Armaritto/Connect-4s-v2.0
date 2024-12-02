@@ -1,13 +1,15 @@
 from board import Board
-from graphviz import Digraph
+from digraph_factory import Digraph_factory
 from helper import Helper
 
 class Expectiminimax_solver:
-    def __init__(self):
-        self.board = Board()  # Initialize the game board
-        self.dot = Digraph()  # Initialize the graph for visualization
-        self.helper = Helper()  # Initialize the helper class
-        self.node_counter = 0  # Initialize the node counter
+    def __init__(self, k):
+        self.board = Board()
+        self.factory = Digraph_factory()
+        self.dot = self.factory.create_digraph("expectiminimax", k)
+        self.helper = Helper(k)
+        self.node_counter = 0
+        pass
 
     def board_to_string(self, board_state):
         if board_state is None:
@@ -65,7 +67,7 @@ class Expectiminimax_solver:
             if utility > max_utility:  # Update max utility
                 max_child, max_utility = child, utility
 
-        label = f'Maximize: Depth {depth}, Utility: {max_utility} \n{self.board_to_string(board_state)}'
+        label = f'Maximize: Depth {depth}, Utility: {max_utility:.4f} \n{self.board_to_string(board_state)}'
         self.add_node(node_id, label)
         return max_child, max_utility
 
@@ -94,7 +96,7 @@ class Expectiminimax_solver:
             if utility < min_utility:  # Update min utility
                 min_child, min_utility = child, utility
 
-        label = f'Minimize: Depth {depth}, Utility:{min_utility} \n{self.board_to_string(board_state)}'
+        label = f'Minimize: Depth {depth}, Utility:{min_utility:.4f} \n{self.board_to_string(board_state)}'
         self.add_node(node_id, label)
         return min_child, min_utility
 
@@ -126,7 +128,7 @@ class Expectiminimax_solver:
 
         expected_utility = expected_utility / weight_sum  # Calculate expected utility
 
-        label = f'Chance: Depth {depth}, Utility:{expected_utility}'
+        label = f'Chance: Depth {depth}, Utility:{expected_utility:.4f}'
         self.add_node(node_id, label)
         return expected_utility
 
