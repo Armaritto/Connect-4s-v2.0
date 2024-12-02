@@ -92,5 +92,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    document.getElementById('openSvgButton').addEventListener('click', function() {
+        window.open('svg.html', '_blank');
+    });
     renderBoard(board);
 });
