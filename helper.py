@@ -1,10 +1,11 @@
 from board import Board
-from graphviz import Digraph
+from digraph_factory import Digraph_factory
 
 class Helper:
-    def __init__(self):
+    def __init__(self, k):
         self.board = Board()
-        self.dot = Digraph()
+        self.factory = Digraph_factory()
+        self.dot = self.factory.create_digraph("minimax", k)
         self.node_counter = 0
         pass
 

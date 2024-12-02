@@ -7,7 +7,7 @@ class Expectiminimax_solver:
         self.board = Board()
         self.factory = Digraph_factory()
         self.dot = self.factory.create_digraph("expectiminimax", k)
-        self.helper = Helper()
+        self.helper = Helper(k)
         self.node_counter = 0
         pass
 

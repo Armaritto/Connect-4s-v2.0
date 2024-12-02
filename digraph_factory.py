@@ -32,13 +32,13 @@ class Digraph_factory:
 
     def create_digraph(self, algorithm, k):
         if algorithm == 'minimax':
-            if k <= 3:
+            if k <= 4:
                 return Digraph()
         elif algorithm == 'alpha-beta':
             if k <= 5:
                 return Digraph()
         elif algorithm == 'expectiminimax':
-            if k <= 4:
+            if k <= 6:
                 return Digraph()
         return DummyDigraph()
         

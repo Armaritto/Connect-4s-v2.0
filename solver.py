@@ -6,7 +6,7 @@ from alpha_beta_minimax import AlphaBetaMinimax
 class Solver:
     def __init__(self, board, k):
         self.board = board
-        self.helper = Helper()
+        self.helper = Helper(k)
         self.expectiminimax_solver = Expectiminimax_solver(k)
 
     def minimax(self, depth, maximizing):
