@@ -38,7 +38,7 @@ class Digraph_factory:
             if k <= 5:
                 return Digraph()
         elif algorithm == 'expectiminimax':
-            if k <= 6:
+            if k <= 4:
                 return Digraph()
         return DummyDigraph()
         

@@ -26,7 +26,7 @@ def make_move():
     algorithm = data.get('algorithm', 'random')
     board_state = data['board'].split('\n')
     board.board = [list(row) for row in board_state]
-    solver = Solver(board, 5)
+    solver = Solver(board, 7)
 
     if column != -1:
         if algorithm == 'expectiminimax':

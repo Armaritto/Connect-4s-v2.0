@@ -61,15 +61,14 @@ class Solver:
 
 
     def minimax_with_alpha_beta(self, maximizing):
-        ab_minimax = AlphaBetaMinimax(self.board)
         if maximizing:
-            child, _ = ab_minimax.maximize(self.k, self.board.board, float('-inf'), float('inf'))
+            child, _ = self.ab_minimax_solver.maximize(self.k, self.board.board, float('-inf'), float('inf'), None)
         else:
-            child, _ = ab_minimax.minimize(self.k, self.board.board, float('-inf'), float('inf'))
+            child, _ = self.ab_minimax_solver.minimize(self.k, self.board.board, float('-inf'), float('inf'), None)
 
 
         # render the tree trace
-        self.ab_minimax_solver.helper.dot.render('tree_trace', format='svg', cleanup=True)
+        self.ab_minimax_solver.dot.render('tree_trace', format='svg', cleanup=True)
 
         # find the best move
         best_move = None
