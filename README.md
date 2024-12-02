@@ -657,6 +657,29 @@ function heuristic(board_state):
 
 #### Test Runs
 
+
+![Test Run 1](test_runs/1.1.png)
+![Test Run 2](test_runs/1.2.png)
+![Test Run 3](test_runs/1.3.png)
+![Test Run 4](test_runs/1.4.png)
+![Test Run 5](test_runs/1.5.png)
+
+
+![Test Run 6](test_runs/2.1.png)
+![Test Run 7](test_runs/2.2.png)
+![Test Run 8](test_runs/2.3.png)
+
+
+![Test Run 9](test_runs/3.1.png)
+![Test Run 10](test_runs/3.2.png)
+![Test Run 11](test_runs/3.3.png)
+
+
+![Test Run 12](test_runs/4.1.png)
+![Test Run 13](test_runs/4.2.png)
+![Test Run 14](test_runs/4.3.png)
+        
+
 #### Screenshots
 
 # Comparaisons Between Algorithms
