@@ -6,14 +6,15 @@ from alpha_beta_minimax import AlphaBetaMinimax
 class Solver:
     def __init__(self, board, k):
         self.board = board
+        self.k = k
         self.helper = Helper(k)
         self.expectiminimax_solver = Expectiminimax_solver(k)
 
-    def minimax(self, depth, maximizing):
+    def minimax(self,  maximizing):
         if maximizing:
-            child,_ = self.helper.maximize(depth, self.board.board, None)
+            child,_ = self.helper.maximize(self.k, self.board.board, None)
         else:
-            child,_ = self.helper.minimize(depth, self.board.board, None)
+            child,_ = self.helper.minimize(self.k, self.board.board, None)
 
         self.helper.dot.render('tree_trace', format='svg', cleanup=True)
 
@@ -25,11 +26,11 @@ class Solver:
                     break
         return best_move
 
-    def expectiminimax(self, depth, maximizing):
+    def expectiminimax(self, maximizing):
         if maximizing:
-            chosen_move,_ = self.expectiminimax_solver.maximize(depth, self.board.board, None)
+            chosen_move,_ = self.expectiminimax_solver.maximize(self.k, self.board.board, None)
         else:
-            chosen_move,_ = self.expectiminimax_solver.minimize(depth, self.board.board, None)
+            chosen_move,_ = self.expectiminimax_solver.minimize(self.k, self.board.board, None)
 
         self.expectiminimax_solver.dot.render('tree_trace', format='svg', cleanup=True)
 
@@ -50,12 +51,12 @@ class Solver:
         print("samples ai:     " + str(samples))
         return random_move
 
-    def minimax_with_alpha_beta(self, depth, maximizing):
+    def minimax_with_alpha_beta(self, maximizing):
         ab_minimax = AlphaBetaMinimax(self.board)
         if maximizing:
-            child, _ = ab_minimax.maximize(depth, self.board.board, float('-inf'), float('inf'))
+            child, _ = ab_minimax.maximize(self.k, self.board.board, float('-inf'), float('inf'))
         else:
-            child, _ = ab_minimax.minimize(depth, self.board.board, float('-inf'), float('inf'))
+            child, _ = ab_minimax.minimize(self.k, self.board.board, float('-inf'), float('inf'))
 
         best_move = None
         for i in range(6):

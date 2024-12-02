@@ -37,11 +37,11 @@ def make_move():
     if algorithm == 'random':
         ai_move = solver.get_random_move()
     elif algorithm == 'minimax':
-        ai_move = solver.minimax(depth=7, maximizing=True)  # maximize ai score
+        ai_move = solver.minimax(maximizing=True)  # maximize ai score
     elif algorithm == 'alpha-beta':
-        ai_move  = solver.minimax_with_alpha_beta(depth=4, maximizing=True)
+        ai_move  = solver.minimax_with_alpha_beta(maximizing=True)
     elif algorithm == 'expectiminimax':
-        ai_move = solver.expectiminimax(depth=4, maximizing=True)
+        ai_move = solver.expectiminimax(maximizing=True)
     else:
         ai_move = solver.get_random_move()
 
