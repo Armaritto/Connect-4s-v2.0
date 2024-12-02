@@ -3,6 +3,12 @@ class Board:
         self.board = ['E' * 7 for _ in range(6)]
         self.current_player = 'X'
 
+    def toggle_player(self):
+        if self.current_player == 'X':
+            self.current_player = 'O'
+        else:
+            self.current_player = 'X'
+            
     def make_move(self, column):
         for row in reversed(self.board):
             if row[column] == 'E':
@@ -16,18 +22,11 @@ class Board:
 
     def get_children(self, board_state):
         children = []
-        changed = False
         for col in range(7):
             if board_state[0][col] == 'E':
                 child = [list(row) for row in board_state]
                 for row in reversed(child):
-                    if row[col] == 'E': 
-                        if not changed:
-                            changed = True
-                            if self.current_player == 'X':
-                                self.current_player = 'O'
-                            else:
-                                self.current_player = 'X'
+                    if row[col] == 'E':  
                         row[col] = self.current_player
                         children.append(child)
                         break

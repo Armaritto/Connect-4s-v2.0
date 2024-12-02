@@ -14,7 +14,7 @@ class Solver:
         else:
             child,_ = self.helper.minimize(depth, self.board.board, None)
 
-        self.helper.dot.render('tree_trace', format='png', cleanup=True)
+        self.helper.dot.render('tree_trace', format='svg', cleanup=True)
 
         best_move = None
         for i in range(6):
@@ -26,9 +26,11 @@ class Solver:
 
     def expectiminimax(self, depth, maximizing):
         if maximizing:
-            chosen_move,_ = self.expectiminimax_solver.maximize(depth, self.board.board)
+            chosen_move,_ = self.expectiminimax_solver.maximize(depth, self.board.board, None)
         else:
-            chosen_move,_ = self.expectiminimax_solver.minimize(depth, self.board.board)
+            chosen_move,_ = self.expectiminimax_solver.minimize(depth, self.board.board, None)
+
+        self.expectiminimax_solver.dot.render('tree_trace', format='svg', cleanup=True)
 
         moves = []
         for col in [chosen_move, chosen_move-1, chosen_move+1]:

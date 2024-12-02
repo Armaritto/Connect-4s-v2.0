@@ -20,6 +20,7 @@ class Helper:
         self.dot.edge(parent_id, child_id)
     
     def maximize(self, depth, board_state, parent_id):
+        self.board.current_player = 'O'
         if self.board.is_full() or depth == 0:
             node_id = str(self.node_counter)
             self.node_counter += 1
@@ -53,6 +54,7 @@ class Helper:
         return max_child, max_utility
 
     def minimize(self, depth, board_state, parent_id):
+        self.board.current_player = 'X'
         if self.board.is_full() or depth == 0:
             node_id = str(self.node_counter)
             self.node_counter += 1
