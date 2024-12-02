@@ -24,7 +24,7 @@ class Helper:
     def maximize(self, depth, board_state, parent_id):
         # set the current player to the AI player
         self.board.current_player = 'O'
-        if self.board.is_full() or depth == 0:      # if the board is full or the depth is 0 (Terminal State)
+        if self.board.is_full(board_state) or depth == 0:      # if the board is full or the depth is 0 (Terminal State)
             node_id = str(self.node_counter)        # set the node id to the current node counter
             self.node_counter += 1
             utility = self.heuristic(board_state)       # calculate the utility of the board state
@@ -60,7 +60,7 @@ class Helper:
 
     def minimize(self, depth, board_state, parent_id):
         self.board.current_player = 'X'
-        if self.board.is_full() or depth == 0:
+        if self.board.is_full(board_state) or depth == 0:
             node_id = str(self.node_counter)
             self.node_counter += 1
             utility = self.heuristic(board_state)
@@ -130,5 +130,6 @@ class Helper:
 
         #calculate the difference between the agent's and the player's potential scores
         h_potential = self.heuristic_helper('O', board_state) - self.heuristic_helper('X', board_state)
-
+        # print("O  ----   " + str(self.heuristic_helper('O', board_state)))
+        # print("X  ----   " + str(self.heuristic_helper('X', board_state)))
         return h_current + h_potential

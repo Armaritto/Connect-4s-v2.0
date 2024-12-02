@@ -43,7 +43,7 @@ class Expectiminimax_solver:
         return children  # Return list of possible board states
 
     def maximize(self, depth, board_state, parent_id):
-        if self.board.is_full() or depth < 1:  # Terminal state check
+        if self.board.is_full(board_state) or depth < 1:  # Terminal state check
             node_id = str(self.node_counter)
             self.node_counter += 1
             utility = self.heuristic(board_state)  # Evaluate the board state
@@ -72,7 +72,7 @@ class Expectiminimax_solver:
         return max_child, max_utility
 
     def minimize(self, depth, board_state, parent_id):
-        if self.board.is_full() or depth < 1:  # Terminal state check
+        if self.board.is_full(board_state) or depth < 1:  # Terminal state check
             node_id = str(self.node_counter)
             self.node_counter += 1
             utility = self.heuristic(board_state)  # Evaluate the board state

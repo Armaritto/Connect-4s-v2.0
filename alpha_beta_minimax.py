@@ -24,7 +24,7 @@ class AlphaBetaMinimax:
 
     def maximize(self, depth, board_state, alpha, beta, parent_id):
         self.board.current_player = 'O'     # set the current player to the AI player
-        if self.board.is_full() or depth == 0:      # if the board is full or the depth is 0 (Terminal State)
+        if self.board.is_full(board_state) or depth == 0: # if the board is full or the depth is 0 (Terminal State)
             # set the node id to the current node counter
             node_id = str(self.node_counter)
             self.node_counter += 1
@@ -66,7 +66,7 @@ class AlphaBetaMinimax:
 
     def minimize(self, depth, board_state, alpha, beta, parent_id):
         self.board.current_player = 'X'     # set the current player to the human player
-        if self.board.is_full() or depth == 0:      # if the board is full or the depth is 0 (Terminal State)
+        if self.board.is_full(board_state) or depth == 0: # if the board is full or the depth is 0 (Terminal State)
             node_id = str(self.node_counter)
             self.node_counter += 1
             utility = self.helper.heuristic(board_state)        # calculate the utility of the board state

@@ -1,7 +1,7 @@
 import random
 class Board:
     def __init__(self):
-        self.board = ['E' * 7 for _ in range(6)]
+        self.board = [['E' for _ in range(7)] for _ in range(6)]
         self.current_player = 'X'
 
     def toggle_player(self):
@@ -51,8 +51,10 @@ class Board:
                         break
         return children
 
-    def is_full(self): #checks terminal state
-        return all(cell != 'E' for row in self.board for cell in row)
+    def is_full(self, board_state): #checks terminal state
+        return all(cell != 'E' for row in board_state for cell in row)
+        
+         
 
     def check_player_score(self):
         return self.score('X')
