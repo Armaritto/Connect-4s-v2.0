@@ -14,13 +14,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
     startButton.addEventListener('click', async () => {
         const kValue = document.getElementById('k-value').value;
-        currentPlayer = firstPlayerSelect.value;
+        // currentPlayer = firstPlayerSelect.value;
         selectedAlgorithm = algorithmSelect.value;
         setupElement.style.display = 'none';
         gameElement.style.display = 'flex';
         renderBoard(board);
-
-        if (currentPlayer === 'O') {
+        console.log(firstPlayerSelect.value)
+        if (firstPlayerSelect.value === 'o player') {
+            currentPlayer = 'O';
+            console.log('agent');
             await makeAgentMove(kValue);
         }
     });
@@ -65,7 +67,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const response = await fetch('http://127.0.0.1:5000/move', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ column: parseInt(column), board: board.map(row => row.join('')).join('\n'), algorithm: selectedAlgorithm, k: kValue })
+                body: JSON.stringify({ column: parseInt(column), board: board.map(row => row.join('')).join('\n'), algorithm: selectedAlgorithm, k: kValue, ai_first: false })
             });
             if (!response.ok) {
                 throw new Error('Network response was not ok');
@@ -82,10 +84,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function makeAgentMove(kValue) {
         try {
+            currentPlayer = 'O';
             const response = await fetch('http://127.0.0.1:5000/move', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ column: -1, board: board.map(row => row.join('')).join('\n'), algorithm: selectedAlgorithm, k: kValue })
+                body: JSON.stringify({ column: -1, board: board.map(row => row.join('')).join('\n'), algorithm: selectedAlgorithm, k: kValue, ai_first: true })
             });
             if (!response.ok) {
                 throw new Error('Network response was not ok');
