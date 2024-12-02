@@ -49,8 +49,9 @@ class Expectiminimax_solver:
             utility = self.heuristic(board_state)  # Evaluate the board state
             label = f'Leaf: Depth {depth}, Utility: {utility} \n{self.board_to_string(board_state)}'
             self.add_node(node_id, label)
-            self.add_edge(parent_id, node_id)
-            return board_state, utility
+            if parent_id is not None:
+                self.add_edge(parent_id, node_id)
+            return None, utility
 
         node_id = str(self.node_counter)
         self.node_counter += 1
@@ -78,8 +79,9 @@ class Expectiminimax_solver:
             utility = self.heuristic(board_state)  # Evaluate the board state
             label = f'Leaf: Depth {depth}, Utility: {utility} \n{self.board_to_string(board_state)}'
             self.add_node(node_id, label)
-            self.add_edge(parent_id, node_id)
-            return board_state, utility
+            if parent_id is not None:
+                self.add_edge(parent_id, node_id)
+            return None, utility
 
         node_id = str(self.node_counter)
         self.node_counter += 1

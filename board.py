@@ -53,8 +53,6 @@ class Board:
 
     def is_full(self, board_state): #checks terminal state
         return all(cell != 'E' for row in board_state for cell in row)
-        
-         
 
     def check_player_score(self):
         return self.score('X')

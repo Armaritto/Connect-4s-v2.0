@@ -46,7 +46,8 @@ def make_move():
     else:
         ai_move = solver.get_random_move()
 
-    board.make_move(ai_move)
+    if ai_move is not None:
+        board.make_move(ai_move)
     player_score = board.check_player_score()
     agent_score = board.check_agent_score()
     return jsonify({'board': str(board), 'ai_move': ai_move, 'player_score': player_score, 'agent_score': agent_score})

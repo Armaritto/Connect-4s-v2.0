@@ -43,10 +43,14 @@ class Solver:
 
         # find the best move
         moves = []
-        for col in [chosen_move, chosen_move-1, chosen_move+1]:
-            if 0 <= col <= 6:
-                if self.board.board[0][col] == 'E':
-                    moves.append(col)
+        print("huifgdfghiusdfgfsdsfddfsfsd    " + str(chosen_move))
+        if chosen_move is not None:
+            for col in [chosen_move, chosen_move-1, chosen_move+1]:
+                if 0 <= col <= 6:
+                    if self.board.board[0][col] == 'E':
+                        moves.append(col)
+        else:
+            return -1
         
         # max chooses the move and lets chance decide the state
         weight = 3

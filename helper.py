@@ -31,7 +31,8 @@ class Helper:
             # set the label of the node
             label = f'Leaf: Depth {depth}, Utility: {utility} \n{self.board_to_string(board_state)}'
             self.add_node(node_id, label)
-            self.add_edge(parent_id, node_id)
+            if parent_id is not None:
+                self.add_edge(parent_id, node_id)
 
             return board_state, utility
         
