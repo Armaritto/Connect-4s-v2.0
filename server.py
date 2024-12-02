@@ -24,9 +24,10 @@ def make_move():
     data = request.json
     column = data['column']
     algorithm = data.get('algorithm', 'random')
+    k = int(data.get('k', 5))  # Default to 5 if not provided
     board_state = data['board'].split('\n')
     board.board = [list(row) for row in board_state]
-    solver = Solver(board, 7)
+    solver = Solver(board, k)
 
     if column != -1:
         if algorithm == 'expectiminimax':

@@ -13,6 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let selectedAlgorithm = 'random';
 
     startButton.addEventListener('click', async () => {
+        const kValue = document.getElementById('k-value').value;
         currentPlayer = firstPlayerSelect.value;
         selectedAlgorithm = algorithmSelect.value;
         setupElement.style.display = 'none';
@@ -20,7 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
         renderBoard(board);
 
         if (currentPlayer === 'O') {
-            await makeAgentMove();
+            await makeAgentMove(kValue);
         }
     });
 
@@ -53,11 +54,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function handleCellClick(event) {
         const column = event.target.dataset.column;
+        const kValue = document.getElementById('k-value').value;
         try {
             const response = await fetch('http://127.0.0.1:5000/move', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ column: parseInt(column), board: board.map(row => row.join('')).join('\n'), algorithm: selectedAlgorithm })
+                body: JSON.stringify({ column: parseInt(column), board: board.map(row => row.join('')).join('\n'), algorithm: selectedAlgorithm, k: kValue })
             });
             if (!response.ok) {
                 throw new Error('Network response was not ok');
@@ -72,12 +74,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    async function makeAgentMove() {
+    async function makeAgentMove(kValue) {
         try {
             const response = await fetch('http://127.0.0.1:5000/move', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ column: -1, board: board.map(row => row.join('')).join('\n'), algorithm: selectedAlgorithm })
+                body: JSON.stringify({ column: -1, board: board.map(row => row.join('')).join('\n'), algorithm: selectedAlgorithm, k: kValue })
             });
             if (!response.ok) {
                 throw new Error('Network response was not ok');
