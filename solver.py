@@ -10,9 +10,11 @@ class Solver:
 
     def minimax(self, depth, maximizing):
         if maximizing:
-            child,_ = self.helper.maximize(depth, self.board.board)
+            child,_ = self.helper.maximize(depth, self.board.board, None)
         else:
-            child,_ = self.helper.minimize(depth, self.board.board)
+            child,_ = self.helper.minimize(depth, self.board.board, None)
+
+        self.helper.dot.render('tree_trace', format='png', cleanup=True)
 
         best_move = None
         for i in range(6):

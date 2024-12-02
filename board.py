@@ -16,16 +16,19 @@ class Board:
 
     def get_children(self, board_state):
         children = []
+        changed = False
         for col in range(7):
             if board_state[0][col] == 'E':
                 child = [list(row) for row in board_state]
                 for row in reversed(child):
-                    if row[col] == 'E':
+                    if row[col] == 'E': 
+                        if not changed:
+                            changed = True
+                            if self.current_player == 'X':
+                                self.current_player = 'O'
+                            else:
+                                self.current_player = 'X'
                         row[col] = self.current_player
-                        if self.current_player == 'X':
-                            self.current_player = 'O'
-                        else:
-                            self.current_player = 'X'
                         children.append(child)
                         break
         return children
