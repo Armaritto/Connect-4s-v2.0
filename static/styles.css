@@ -54,7 +54,7 @@ body {
 #scores {
     display: flex;
     justify-content: space-between;
-    width: 300px;
+    width: 700px;
     font-size: 18px;
     color: #333;
     margin-bottom: 20px;

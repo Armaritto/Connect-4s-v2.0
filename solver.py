@@ -18,6 +18,7 @@ class Solver:
         else:
             child,_ = self.helper.minimize(self.k, self.board.board, None)
 
+        node_counter = self.helper.node_counter
         # render the tree trace
         self.helper.dot.render('tree_trace', format='svg', cleanup=True)
 
@@ -28,7 +29,7 @@ class Solver:
                 if self.board.board[i][j] != child[i][j]:
                     best_move = j
                     break
-        return best_move
+        return best_move, node_counter
 
 
     def expectiminimax(self, maximizing):
@@ -37,7 +38,7 @@ class Solver:
         else:
             chosen_move,_ = self.expectiminimax_solver.minimize(self.k, self.board.board, None)
 
-
+        node_counter = self.expectiminimax_solver.node_counter
         # render the tree trace
         self.expectiminimax_solver.dot.render('tree_trace', format='svg', cleanup=True)
 
@@ -61,7 +62,7 @@ class Solver:
             weight = 1
         random_move = random.choice(samples)
         print("samples ai:     " + str(samples))
-        return random_move
+        return random_move, node_counter
 
 
     def minimax_with_alpha_beta(self, maximizing):
@@ -70,7 +71,7 @@ class Solver:
         else:
             child, _ = self.ab_minimax_solver.minimize(self.k, self.board.board, float('-inf'), float('inf'), None)
 
-
+        node_counter = self.ab_minimax_solver.node_counter
         # render the tree trace
         self.ab_minimax_solver.dot.render('tree_trace', format='svg', cleanup=True)
 
@@ -81,7 +82,7 @@ class Solver:
                 if self.board.board[i][j] != child[i][j]:
                     best_move = j
                     break
-        return best_move
+        return best_move, node_counter
 
     def get_random_move(self):      # if the AI player cannot find a winning move, it will choose a random move
         valid_columns = [col for col in range(7) if self.board.board[0][col] == 'E']

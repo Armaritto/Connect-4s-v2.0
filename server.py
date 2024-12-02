@@ -1,3 +1,5 @@
+import time
+
 from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 from board import Board
@@ -8,7 +10,7 @@ app = Flask(__name__, static_folder='static')
 CORS(app)  # Enable CORS
 
 board = Board()
-
+nodes_expanded = 0
 @app.route('/')
 def index():
     return send_from_directory(app.static_folder, 'index.html')
@@ -21,6 +23,7 @@ def style():
 
 @app.route('/move', methods=['POST'])
 def make_move():
+    global nodes_expanded
     data = request.json
     column = data['column']
     algorithm = data.get('algorithm', 'random')
@@ -34,23 +37,24 @@ def make_move():
             board.make_move_with_chance(column)
         else:
             board.make_move(column)
-
+    start_time = time.time()
     if algorithm == 'random':
         ai_move = solver.get_random_move()
     elif algorithm == 'minimax':
-        ai_move = solver.minimax(maximizing =  True)
+        ai_move, nodes_expanded = solver.minimax(maximizing =  True)
     elif algorithm == 'alpha-beta':
-        ai_move  = solver.minimax_with_alpha_beta(maximizing =  True)
+        ai_move, nodes_expanded  = solver.minimax_with_alpha_beta(maximizing =  True)
     elif algorithm == 'expectiminimax':
-        ai_move = solver.expectiminimax(maximizing =  True)
+        ai_move, nodes_expanded = solver.expectiminimax(maximizing =  True)
     else:
         ai_move = solver.get_random_move()
-
+    end_time = time.time()
+    time_taken = end_time - start_time
     if ai_move is not None:
         board.make_move(ai_move)
     player_score = board.check_player_score()
     agent_score = board.check_agent_score()
-    return jsonify({'board': str(board), 'ai_move': ai_move, 'player_score': player_score, 'agent_score': agent_score})
+    return jsonify({'board': str(board), 'ai_move': ai_move, 'player_score': player_score, 'agent_score': agent_score, 'nodes_expanded': nodes_expanded, 'time_taken': time_taken})
 
 if __name__ == '__main__':
     app.run(debug=True)
