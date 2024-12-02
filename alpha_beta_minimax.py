@@ -1,97 +1,95 @@
 from board import Board
+from helper import Helper
 
 class AlphaBetaMinimax:
-    def __init__(self, board):
-        self.board = board
+    def __init__(self):
+        self.board = Board()        # create an instance of the Board class
+        self.helper = Helper()      # create an instance of the Helper class
         pass
 
-    def maximize(self, depth, board_state, alpha, beta, indent=0):
-        if self.board.is_full() or depth == 0:
-            utility = self.heuristic(board_state)
-            print(f"{' ' * indent}Maximize: Depth {depth}, Utility {utility}, State:\n{board_state}")
+    def maximize(self, depth, board_state, alpha, beta, parent_id):
+        self.board.current_player = 'O'     # set the current player to the AI player
+        if self.board.is_full() or depth == 0:      # if the board is full or the depth is 0 (Terminal State)
+            # set the node id to the current node counter
+            node_id = str(self.helper.node_counter)
+            self.helper.node_counter += 1
+            utility = self.helper.heuristic(board_state)        # calculate the utility of the board state
+            # set the label of the node and add it to the graph
+            label = f'Leaf: Depth {depth}, Utility: {utility} \n{self.helper.board_to_string(board_state)}'
+            self.helper.add_node(node_id, label)
+            self.helper.add_edge(parent_id, node_id)
             return board_state, utility
 
-        max_child, max_utility = None, float('-inf')
+        # set the node id to the current node counter
+        node_id = str(self.helper.node_counter)
+        self.helper.node_counter += 1
+        # add the node to the graph
+        label = " "
+        self.helper.add_node(node_id, label)
+        if parent_id is not None:
+            self.helper.add_edge(parent_id, node_id)
+
+        max_child, max_utility = None, float('-inf')        # initialize the max child and max utility
 
         for child in self.board.get_children(board_state):
-            _, utility = self.minimize(depth - 1, child, alpha, beta, indent + 2)
+            _, utility = self.minimize(depth - 1, child, alpha, beta, node_id)      # minimize the child
 
-            if utility > max_utility:
+            if utility > max_utility:       # if the utility is greater than the max utility, update the max child and max utility
                 max_child, max_utility = child, utility
 
-            if max_utility >= beta:
+            if max_utility >= beta:         # if the max utility is greater than or equal to beta, break (prune the tree)
                 break
 
-            if max_utility > alpha:
+            if max_utility > alpha:     # if the max utility is greater than alpha, update alpha
                 alpha = max_utility
 
-        print(f"{' ' * indent}Maximize: Depth {depth}, Utility {max_utility}, State:\n{board_state}")
+        # set the label of the node and add it to the graph
+        label = f'Maximize: Depth {depth}, Utility: {max_utility} \n{self.helper.board_to_string(board_state)}'
+        self.helper.add_node(node_id, label)
+
         return max_child, max_utility
 
-    def minimize(self, depth, board_state, alpha, beta, indent=0):
-        if self.board.is_full() or depth == 0:
-            utility = self.heuristic(board_state)
-            print(f"{' ' * indent}Minimize: Depth {depth}, Utility {utility}, State:\n{board_state}")
+    def minimize(self, depth, board_state, alpha, beta, parent_id):
+        self.board.current_player = 'X'     # set the current player to the human player
+        if self.board.is_full() or depth == 0:      # if the board is full or the depth is 0 (Terminal State)
+            node_id = str(self.helper.node_counter)
+            self.helper.node_counter += 1
+            utility = self.helper.heuristic(board_state)        # calculate the utility of the board state
+
+            # set the label of the node and add it to the graph
+            label = f'Leaf: Depth {depth}, Utility: {utility} \n{self.helper.board_to_string(board_state)}'
+            self.helper.add_node(node_id, label)
+            self.helper.add_edge(parent_id, node_id)
             return board_state, utility
 
-        min_child, min_utility = None, float('inf')
+        # set the node id to the current node counter
+        node_id = str(self.helper.node_counter)
+        self.helper.node_counter += 1
+        # add the node to the graph
+        label = " "
+        self.helper.add_node(node_id, label)
+        if parent_id is not None:
+            self.helper.add_edge(parent_id, node_id)
 
-        for child in self.board.get_children(board_state):
-            _, utility = self.maximize(depth - 1, child, alpha, beta, indent + 2)
+        min_child, min_utility = None, float('inf')     # initialize the min child and min utility
 
-            if utility < min_utility:
+        for child in self.board.get_children(board_state):      # get the children of the board state
+            _, utility = self.maximize(depth - 1, child, alpha, beta, node_id)      # maximize the child
+
+            if utility < min_utility:           # if the utility is less than the min utility, update the min child and min utility
                 min_child, min_utility = child, utility
 
-            if min_utility <= alpha:
+            if min_utility <= alpha:        # if the min utility is less than or equal to alpha, break (prune the tree)
                 break
 
-            if min_utility < beta:
+            if min_utility < beta:      # if the min utility is less than beta, update beta
                 beta = min_utility
 
-        print(f"{' ' * indent}Minimize: Depth {depth}, Utility {min_utility}, State:\n{board_state}")
+        # set the label of the node and add it to the graph
+        label = f'Minimize: Depth {depth}, Utility:{min_utility} \n{self.helper.board_to_string(board_state)}'
+        self.helper.add_node(node_id, label)
+
         return min_child, min_utility
 
-    def heuristic_helper(self, player, board_state):
-        pot_horizontal = 0
-        pot_vertical = 0
-        pot_diagonal = 0
-        # move a window of 4 over the row, column, or diagonal if the window contains a token that is not the player or an empty space, don't increment the potential score, otherwise increment
-        #Horizontal
-        for row in board_state:
-           for i in range(len(row) - 3):
-                window = row[i:i + 4]
-                if all(cell == player or cell == 'E' for cell in window):
-                    pot_horizontal += 1
-
-        #Vertical
-        for col in range(7):
-            for i in range(3):
-                window = [board_state[i + j][col] for j in range(4)]
-                if all(cell == player or cell == 'E' for cell in window):
-                    pot_vertical += 1
-
-        #Diagonal
-        for i in range(3):
-            for j in range(4):
-                #positive slope
-                window = [board_state[i + k][j + k] for k in range(4)]
-                if all(cell == player or cell == 'E' for cell in window):
-                    pot_diagonal += 1
-                #negative slope
-                window = [board_state[i + k][j + 3 - k] for k in range(4)]
-                if all(cell == player or cell == 'E' for cell in window):
-                    pot_diagonal += 1
-
-        return pot_horizontal + pot_vertical + pot_diagonal
-
-    def heuristic(self, board_state):
-
-        #calculate the difference between the agent's and the player's actual scores
-        h_current = self.board.check_agent_score() - self.board.check_player_score()
-
-        #calculate the difference between the agent's and the player's potential scores
-        h_potential = self.heuristic_helper('O', board_state) - self.heuristic_helper('X', board_state)
-
-        return h_current + h_potential
 
 
