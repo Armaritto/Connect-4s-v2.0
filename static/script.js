@@ -14,13 +14,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
     startButton.addEventListener('click', async () => {
         const kValue = document.getElementById('k-value').value;
-        currentPlayer = firstPlayerSelect.value;
+        // currentPlayer = firstPlayerSelect.value;
         selectedAlgorithm = algorithmSelect.value;
         setupElement.style.display = 'none';
         gameElement.style.display = 'flex';
         renderBoard(board);
-
-        if (currentPlayer === 'O') {
+        console.log(firstPlayerSelect.value)
+        if (firstPlayerSelect.value === 'o player') {
+            currentPlayer = 'O';
+            console.log('agent');
             await makeAgentMove(kValue);
         }
     });
@@ -82,6 +84,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function makeAgentMove(kValue) {
         try {
+            currentPlayer = 'O';
             const response = await fetch('http://127.0.0.1:5000/move', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
