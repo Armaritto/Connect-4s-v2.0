@@ -16,6 +16,12 @@ number of connected-fours.
 
 ## Problem Statement ❓
 
+You are required to support the following 3 algorithms as options for the AI agent:
+• Minimax without alpha-beta pruning
+• Minimax with alpha-beta pruning
+• Expected Minimax : probability that disc falls in chosen column is 0.6 and 0.4 that it
+will into the column on left or right
+
 # Implementation
 
 ## Main Solver Class
@@ -718,6 +724,7 @@ function heuristic(board_state):
 | 8 |           29.8 min           |          36.99 s          |    40.67 s     |
 
 
-
-
+# Plotting
+![nodes_plot.png](test_runs/nodes_plot.png)
+![time_plot.png](test_runs/time_plot.png)
 
