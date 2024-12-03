@@ -16,7 +16,7 @@ number of connected-fours.
 
 ## Problem Statement ❓
 
-You are required to support the following 3 algorithms as options for the AI agent:
+It is required to support the following 3 algorithms as options for the AI agent:
 • Minimax without alpha-beta pruning
 • Minimax with alpha-beta pruning
 • Expected Minimax : probability that disc falls in chosen column is 0.6 and 0.4 that it
@@ -163,6 +163,50 @@ The `Helper` class provides utility functions and data structures to support the
   - Calculates the difference between the agent's and the player's actual scores.
   - Calculates the difference between the agent's and the player's potential scores.
   - Returns the sum of the actual and potential score differences.
+  
+##### Admissibility and Consistency
+  - **Heuristic Definition:** The heuristic is defined as:
+  - ```H(state) = (H_actual_AI - H_actual(Player)) + (H_potential(AI) - H_potential(Player))```
+    - Where:
+        - ````H_actual(AI)```: Number of completed 4s by the AI.
+        - ```H_actual(Player)```: Number of completed 4s by the human player.
+        - ```H_potential(AI)```: Number of potential 4s by the AI.
+        - ```H_potential(Player)```: Number of potential 4s by the human player. 
+      
+  -**Admissibility Criterion:** A heuristic H(state) is **admissible** if:
+  ```H(state) <= H*(state)```
+    Where:
+      - H(state): The heuristic estimate of the utility value of the state.
+      - H*(state): The true utility value (i.e., the actual utility that can be achieved starting from this state). 
+
+  - **Components of the Heuristic:**
+    1. **Actual Difference**: ```H_actual(AI) - H_actual(Player)```
+       - This term is **exact** and does not overestimate the true utility, as it only reflects already completed 4s.
+    2. **Potential Difference**: ```H_potential(AI) - H_potential(Player)```
+       - This term conservatively estimates the difference in potential 4s between the AI and the human player.
+
+  - **Why the Heuristic is Admissible:**
+      1. **Exactness in ```H_actual```:**
+         - The first term ```H_actual(AI) - H_actual(Player)``` is accurate because it directly reflects the current utility difference.
+       2. **Conservativeness in ```H_potential```:**
+          - The second term ```H_potential(AI) - H_potential(Player)``` measures the difference in potential utility, not the absolute potential for either player. This avoids overestimation.
+       3. **Interaction Between Players:**
+          - By focusing on **differences**, the heuristic respects the zero-sum nature of the game: one player's gain limits the other's opportunities.
+       4. **No Overestimation:**
+          - The heuristic does not assume that both players can simultaneously complete conflicting potential 4s, ensuring it remains conservative. 
+       5. **Monotonicity:** 
+          - As the game progresses:
+            - ```H_actual(AI)``` and ```H_actual(Player)``` increase as players complete more lines.
+            - ```H_potential(AI)``` and ```H_potential(Player)``` decrease as fewer opportunities remain.
+          - The heuristic remains consistent and never overestimates the true utility value.
+  - **Conclusion:** 
+  - The heuristic: ```H(state) = (H_actual_AI - H_actual(Player)) + (H_potential(AI) - H_potential(Player))``` is **admissible** because:
+    1. H_actual accurately measures the current utility difference without overestimation.
+    2. H_potential conservatively estimates the potential utility difference.
+    3. The heuristic respects the interaction between players and avoids overestimating achievable utility.
+
+
+
 
 ### Pseudocode
 ```python
@@ -348,11 +392,6 @@ The Minimax algorithm is a decision-making algorithm used in two-player games li
        return min_child, min_utility
 ```
 
-#### Test Runs
-
-#### Screenshots
-
-
 ### Minimax With Pruning:
 
 #### About 
@@ -480,9 +519,6 @@ function minimize(depth, board_state, alpha, beta, parent_id):
     add node with node_id and label
     return min_child, min_utility
 ```
-#### Test Runs
-
-#### Screenshots
 
 ### Expectiminimax:
 
@@ -669,7 +705,8 @@ function heuristic(board_state):
     return helper.heuristic(board_state)
 ```
 
-#### Test Runs
+
+# Test Runs
 
 
 ![Test Run 1](test_runs/1.1.png)
