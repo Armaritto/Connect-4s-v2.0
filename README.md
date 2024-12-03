@@ -5,6 +5,10 @@
 - [Andrew Ashraf: 21010313](https://github.com/AndrewAchraf)
 - [Pierre Jack: 21010394](https://github.com/Pierre-Jack)
 
+# GitHub Repository 📁
+- [Connect-4 AI Solver](https://github.com/Armaritto/Connect-4s-v2.0)
+
+
 # Introduction 🌟
 
 Connect 4 is a two-player game in which the players first choose a color and then take turns
