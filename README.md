@@ -1,4 +1,4 @@
-# Connect-4 AI Solver
+# Connect-4s AI Solver
 
 ## Collaborators 👥
 - [Armia Joseph: 21010229](https://github.com/Armaritto)
@@ -6,7 +6,8 @@
 - [Pierre Jack: 21010394](https://github.com/Pierre-Jack)
 
 # GitHub Repository 📁
-- [Connect-4 AI Solver](https://github.com/Armaritto/Connect-4s-v2.0)
+- [Connect-4s-AI-Solver](https://github.com/Armaritto/Connect-4s-v2.0)
+- [Simple-Connect-4s](https://github.com/Armaritto/Connect-4)
 
 
 # Introduction 🌟
@@ -26,7 +27,7 @@ It is required to support the following 3 algorithms as options for the AI agent
 • Expected Minimax : probability that disc falls in chosen column is 0.6 and 0.4 that it
 will into the column on left or right
 
-# Implementation
+# Implementation 
 
 ## Main Solver Class
 The `Solver` class provides various AI strategies for making moves in a Connect-4 game. It includes methods for random move selection, Minimax, Alpha-Beta Pruning, and Expectiminimax algorithms. The class interacts with the `Board` class to evaluate and make moves.
